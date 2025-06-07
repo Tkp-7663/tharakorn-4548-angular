@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -10,16 +10,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 })
 
 export class Login {
-  email: string = '';
-  password: string = '';
+  loginForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
 
   onSubmit() {
-    if (this.email && this.password) {
-      console.log('Email:', this.email);
-      console.log('Password:', this.password);
-      // เพิ่ม logic login จริงได้ตรงนี้
+    if (this.loginForm.valid) {
+      console.log('Form Submitted', this.loginForm.value);
     } else {
-      alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+      console.log('Form is invalid');
     }
-  }
+}
 }
